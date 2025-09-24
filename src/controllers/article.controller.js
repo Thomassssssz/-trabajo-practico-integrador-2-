@@ -79,7 +79,6 @@ export const addTagToArticle = async (req, res) => {
     const tag = await TagModel.findById(tagId);
     if (!tag) return res.status(404).json({ error: "Etiqueta no encontrada" });
 
-    // Agregar tag si no está
     if (!article.tags.includes(tagId)) {
       article.tags.push(tagId);
       await article.save();
