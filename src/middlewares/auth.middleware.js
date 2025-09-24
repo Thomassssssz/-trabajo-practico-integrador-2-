@@ -1,7 +1,7 @@
 import { verifyToken } from "../helpers/jwt.js";
 import { UserModel } from "../models/user.model.js";
 
-// Verifica que el usuario esté logueado
+//------Verifica que el usuario esté logueado-----//
 export const authMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies.token;
@@ -16,14 +16,14 @@ export const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ error: "Usuario no válido" });
     }
 
-    req.user = user; // guardamos el usuario en req
+    req.user = user;
     next();
   } catch (error) {
     return res.status(401).json({ error: "Token inválido" });
   }
 };
 
-// Verifica que sea admin
+//--------Verifica que sea admin---------//
 export const adminMiddleware = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ error: "Acceso denegado, solo admin" });
@@ -31,7 +31,7 @@ export const adminMiddleware = (req, res, next) => {
   next();
 };
 
-// Verifica que sea dueño del recurso o admin
+//----------Verifica que sea dueño del recurso o admin---------//
 export const ownerOrAdminMiddleware = (
   model,
   field = "author",
@@ -39,7 +39,7 @@ export const ownerOrAdminMiddleware = (
 ) => {
   return async (req, res, next) => {
     try {
-      const resourceId = req.params[paramName]; // 👈 usa el nombre del parámetro correcto
+      const resourceId = req.params[paramName];
       const resource = await model.findById(resourceId);
 
       if (!resource) {
